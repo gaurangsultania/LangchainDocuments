@@ -17,15 +17,16 @@ from langchain.chains import RetrievalQA
 # from langchain.llms import OpenAI
 import os
 
-from langchain.agents import create_pandas_dataframe_agent
+# from langchain.agents import create_pandas_dataframe_agent
+from agent import create_pandas_dataframe_agent
 
-# Import vector store stuff
-from langchain.agents.agent_toolkits import (
-    create_vectorstore_agent,
-    VectorStoreToolkit,
-    VectorStoreInfo
-)
-from langchain import HuggingFaceHub
+# # Import vector store stuff
+# from langchain.agents.agent_toolkits import (
+#     create_vectorstore_agent,
+#     VectorStoreToolkit,
+#     VectorStoreInfo
+# )
+# from langchain import HuggingFaceHub
 
 import pandas as pd
 from io import StringIO
@@ -37,7 +38,7 @@ from getpass import getpass
 
 # Set APIkey for OpenAI Service
 # Can sub this out for other LLM providers
-os.environ['OPENAI_API_KEY'] = "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"
+os.environ['OPENAI_API_KEY'] = "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"
 
 # Create instance of OpenAI LLM
 
@@ -61,15 +62,14 @@ st.title('AleGent: Your Personal Data Assistant')
 uploaded_file = st.file_uploader("Choose a file", type={"csv"})
 if uploaded_file:
     df = pd.read_csv(uploaded_file)
-    agent_kwargs = {
-    "extra_prompt_messages": [MessagesPlaceholder(variable_name="memory")],
-}
+    # agent_kwargs = {
+    # "extra_prompt_messages": [MessagesPlaceholder(variable_name="memory")],
+    # }
     memory = ConversationBufferMemory(memory_key="memory", return_messages=True)
 
     agent = create_pandas_dataframe_agent(llm, # Swappable with any LLM model from OpenAI, HuggingFace, GPT4All
                                             df,
                                             verbose=True,
-                                            agent_executor_kwargs=agent_kwargs,
                                             return_intermediate_steps=True,
                                             memory = True)
     prompt = PromptTemplate(
